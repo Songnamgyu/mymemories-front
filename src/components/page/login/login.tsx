@@ -1,15 +1,39 @@
 import { useNavigate } from "react-router-dom";
 import MainSideView from "../../common/MainSideView";
+import React, { useState } from "react";
+
+type Login = {
+    email: string;
+    password: string;
+};
 
 const Login = () => {
     const naviagtion = useNavigate();
+    const [loginData, setLoginData] = useState<Login>({
+        email: "",
+        password: "",
+    });
+
+    const onChangeHandler = (e: React.ChangeEvent<HTMLInputElement>) => {
+        setLoginData({
+            ...loginData,
+            [e.target.name]: e.target.value,
+        });
+    };
+    const onSubmitHandler = (e: React.FormEvent) => {
+        e.preventDefault();
+        console.log("loginData", loginData);
+    };
     return (
         <div className="h-screen flex">
             {/* 로그인 이미지 섹션 */}
             <MainSideView />
             <div className="flex w-full lg:w-1/2 justify-center items-center bg-white space-y-8">
                 <div className="w-full px-8 md:px-32 lg:px-24">
-                    <form className="bg-white rounded-md shadow-2xl p-5">
+                    <form
+                        className="bg-white rounded-md shadow-2xl p-5"
+                        onSubmit={onSubmitHandler}
+                    >
                         <h1 className="text-gray-800 font-bold text-2xl mb-1">
                             Hello Again!
                         </h1>
@@ -37,6 +61,7 @@ const Login = () => {
                                 type="email"
                                 name="email"
                                 placeholder="Email Address"
+                                onChange={(e) => onChangeHandler(e)}
                             />
                         </div>
                         <div className="flex items-center border-2 mb-12 py-2 px-3 rounded-2xl ">
@@ -58,6 +83,7 @@ const Login = () => {
                                 name="password"
                                 id="password"
                                 placeholder="Password"
+                                onChange={(e) => onChangeHandler(e)}
                             />
                         </div>
                         <button
