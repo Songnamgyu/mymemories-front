@@ -2,10 +2,14 @@ import React, { useState } from "react";
 import { Alert, Calendar } from "antd";
 import type { Dayjs } from "dayjs";
 import dayjs from "dayjs";
+import { useNavigate } from "react-router-dom";
+import CommonHeader from "../../../../common/CommonHeader";
 
 const Info: React.FC = () => {
     const [value, setValue] = useState(() => dayjs(new Date()));
     const [selectedValue, setSelectedValue] = useState(() => dayjs(new Date()));
+
+    const navigate = useNavigate();
 
     const onSelect = (newValue: Dayjs) => {
         setValue(newValue);
@@ -18,22 +22,23 @@ const Info: React.FC = () => {
 
     const onDoubleClickHandler = () => {
         console.log("onDoubleClickHandler");
+        navigate("/detail");
     };
 
     return (
         <>
-            <Alert
-                message={`You selected date: ${selectedValue?.format(
-                    "YYYY-MM-DD"
-                )}`}
-            />
-            <div onDoubleClick={onDoubleClickHandler}>
-                <Calendar
-                    value={value}
-                    onSelect={onSelect}
-                    onPanelChange={onPanelChange}
-                />
-            </div>
+            <CommonHeader>
+                <div
+                    onDoubleClick={onDoubleClickHandler}
+                    style={{ height: "100%" }}
+                >
+                    <Calendar
+                        value={value}
+                        onSelect={onSelect}
+                        onPanelChange={onPanelChange}
+                    />
+                </div>
+            </CommonHeader>
         </>
     );
 };
