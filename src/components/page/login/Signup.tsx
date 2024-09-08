@@ -1,9 +1,10 @@
 import React, { HtmlHTMLAttributes, ReactHTMLElement, useState } from "react";
 import MainSideView from "../../common/MainSideView";
 import { emit } from "process";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { createUser } from "../../../api/users/userApi";
-import { AppDispatch } from "../../../app/store";
+import { AppDispatch, RootState } from "../../../app/store";
+import { useNavigate } from "react-router-dom";
 
 const SignUp = () => {
     const [formData, setFormData] = useState({
@@ -14,6 +15,10 @@ const SignUp = () => {
         phoneNumber: "",
         gender: "",
     });
+
+    const navigator = useNavigate();
+
+    const { message } = useSelector((state: RootState) => state.user);
 
     const dispatch = useDispatch<AppDispatch>();
 
@@ -44,6 +49,12 @@ const SignUp = () => {
         console.log("Submitted Data:", formData);
         // 여기서 formData를 백엔드에 전송하는 로직 추가
         dispatch(createUser(formData));
+        if (message === "success") {
+            alert("회원가입 성공");
+            navigator("/");
+        } else {
+            alert("회원가입 실패, 계정이 이미 존재합니다");
+        }
     };
 
     return (

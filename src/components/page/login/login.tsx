@@ -1,6 +1,9 @@
 import { useNavigate } from "react-router-dom";
 import MainSideView from "../../common/MainSideView";
 import React, { useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { AppDispatch, RootState } from "../../../app/store";
+import { fetchUser } from "../../../api/users/userApi";
 
 type Login = {
     email: string;
@@ -13,6 +16,8 @@ const Login = () => {
         email: "",
         password: "",
     });
+    const dispatch = useDispatch<AppDispatch>();
+    const { isAuthenciated } = useSelector((state: RootState) => state.user);
 
     const onChangeHandler = (e: React.ChangeEvent<HTMLInputElement>) => {
         setLoginData({
@@ -23,6 +28,11 @@ const Login = () => {
     const onSubmitHandler = (e: React.FormEvent) => {
         e.preventDefault();
         console.log("loginData", loginData);
+        dispatch(fetchUser(loginData));
+        if (isAuthenciated) {
+            console.log("aaa");
+            naviagtion("/home");
+        }
     };
     return (
         <div className="h-screen flex">
