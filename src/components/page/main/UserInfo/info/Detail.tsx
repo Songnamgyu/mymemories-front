@@ -1,8 +1,6 @@
 import CommonHeader from "../../../../common/CommonHeader";
 
 const Detail = () => {
-    console.log("aaaaaa-de");
-
     return (
         <div>
             <CommonHeader>

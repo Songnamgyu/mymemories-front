@@ -18,7 +18,11 @@ const initialState: User = {
 const userSlice = createSlice({
     name: "user",
     initialState,
-    reducers: {},
+    reducers: {
+        setIsAuthenciated: (state, action) => {
+            state.isAuthenciated = action.payload;
+        },
+    },
     extraReducers: (builder) => {
         builder
             .addCase(createUser.pending, (state) => {
@@ -55,4 +59,5 @@ const userSlice = createSlice({
     },
 });
 
+export const { setIsAuthenciated } = userSlice.actions; // 액션을 export
 export default userSlice.reducer;
