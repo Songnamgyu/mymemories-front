@@ -34,7 +34,7 @@ function App() {
                 <Route path="/join" element={<SignUp />} />
                 <Route path="/home" element={<Home />} />
                 <Route path="/info" element={<Info />} />
-                <Route path="/detail/:id" element={<Detail />} />
+                <Route path="/detail/:date" element={<Detail />} />
             </Routes>
         </BrowserRouter>
     );

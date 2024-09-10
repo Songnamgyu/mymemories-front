@@ -14,8 +14,8 @@ const Info: React.FC = () => {
     };
 
     const onDoubleClickHandler = () => {
-        const id = value.format("YYYY-MM-DD"); // Use the selected value for navigation
-        navigate(`/detail/${id}`);
+        const date = value.format("YYYY-MM-DD"); // Use the selected value for navigation
+        navigate(`/detail/${date}`);
     };
 
     return (
