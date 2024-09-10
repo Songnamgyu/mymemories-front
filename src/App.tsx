@@ -1,15 +1,15 @@
 import React, { useEffect } from "react";
+import { BrowserRouter, Route, Routes } from "react-router-dom";
+import { shallowEqual, useDispatch, useSelector } from "react-redux";
+import { AppDispatch, RootState } from "./app/store";
+import { setIsAuthenciated } from "./slice/userSlice";
 import "tailwindcss/tailwind.css";
 import "./App.css";
 import Login from "./components/page/login/login";
-import { BrowserRouter, Route, Routes, useNavigate } from "react-router-dom";
 import SignUp from "./components/page/login/Signup";
 import Home from "./components/page/main/Home";
 import Info from "./components/page/main/UserInfo/info/Info";
 import Detail from "./components/page/main/UserInfo/info/Detail";
-import { shallowEqual, useDispatch, useSelector } from "react-redux";
-import { AppDispatch, RootState } from "./app/store";
-import { setIsAuthenciated } from "./slice/userSlice";
 
 function App() {
     const { isAuthenciated } = useSelector(
@@ -17,19 +17,16 @@ function App() {
         shallowEqual
     );
     const dispatch = useDispatch<AppDispatch>();
-    const refreshToken = localStorage.getItem("refreshToken");
+
     useEffect(() => {
-        if (refreshToken) {
-            dispatch(setIsAuthenciated(true));
-        } else {
-            dispatch(setIsAuthenciated(false));
-        }
-    }, []);
+        const refreshToken = localStorage.getItem("refreshToken");
+        dispatch(setIsAuthenciated(!!refreshToken)); // Set authenticated state based on the presence of refreshToken
+    }, [dispatch]);
 
     return (
         <BrowserRouter>
             <Routes>
-                {isAuthenciated || refreshToken ? (
+                {isAuthenciated ? (
                     <Route path="/" element={<Home />} />
                 ) : (
                     <Route path="/" element={<Login />} />
@@ -37,7 +34,7 @@ function App() {
                 <Route path="/join" element={<SignUp />} />
                 <Route path="/home" element={<Home />} />
                 <Route path="/info" element={<Info />} />
-                <Route path="/detail" element={<Detail />} />
+                <Route path="/detail/:id" element={<Detail />} />
             </Routes>
         </BrowserRouter>
     );
