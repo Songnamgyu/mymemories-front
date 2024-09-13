@@ -82,7 +82,7 @@ const CommonHeader: React.FC<CommonHeaderProps> = ({
     };
 
     return (
-        <Layout style={{ height: "800px", display: "flex" }}>
+        <Layout style={{ height: "1000px", display: "flex" }}>
             <Header style={{ display: "flex", alignItems: "center" }}>
                 <div className="demo-logo" />
                 <Menu
@@ -94,12 +94,21 @@ const CommonHeader: React.FC<CommonHeaderProps> = ({
                 />
             </Header>
             <Layout>
-                <Sider width={200} style={{ background: colorBgContainer }}>
+                <Sider
+                    width={200}
+                    style={{
+                        background: colorBgContainer,
+                        borderRight: "1px solid bloack",
+                    }}
+                >
                     <Menu
                         mode="inline"
                         defaultSelectedKeys={["1"]}
                         defaultOpenKeys={["sub1"]}
-                        style={{ height: "100%", borderRight: 0 }}
+                        style={{
+                            height: "1000px",
+                            borderRight: "1px solid black",
+                        }}
                         items={items2}
                         onClick={onMenuClick} // 메뉴 클릭 시 기본 처리 혹은 전달된 함수 호출
                     />
