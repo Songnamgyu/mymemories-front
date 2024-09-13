@@ -12,6 +12,7 @@ const Detail = () => {
     const [selectedDate, setSelectDate] = useState("");
     const [emotion, setEmotion] = useState(3);
     const navigate = useNavigate();
+    const [isEdit, setIsEdit] = useState<boolean>(false);
 
     //
     const emotionList = [
@@ -90,7 +91,7 @@ const Detail = () => {
                             </div>
                         </section>
                         <section>
-                            <h2>오늘의 일기</h2>
+                            <h4>오늘의 일기</h4>
                             <div className="input_box text_wrapper">
                                 <textarea
                                     placeholder="오늘은 어땟나요?"
@@ -102,23 +103,23 @@ const Detail = () => {
                         </section>
                         <section />
                         <div className="control_box">
-                            {/* <MyButton
-                            text={"취소하기"}
-                            onClick={() => navigate(-1)}
-                        />
-                        {isEdit ? (
-                            <MyButton
-                                text={"수정하기"}
-                                type={"positive"}
-                                onClick={handleEdit}
+                            <DiaryButton
+                                text={"취소하기"}
+                                onClick={() => navigate(-1)}
                             />
-                        ) : (
-                            <MyButton
-                                text={"작성완료"}
-                                type={"positive"}
-                                onClick={handleSubmit}
-                            />
-                        )} */}
+                            {isEdit ? (
+                                <DiaryButton
+                                    text={"수정하기"}
+                                    type={"positive"}
+                                    // onClick={handleEdit}
+                                />
+                            ) : (
+                                <DiaryButton
+                                    text={"작성완료"}
+                                    type={"positive"}
+                                    //onClick={handleSubmit}
+                                />
+                            )}
                         </div>
                     </section>
                 </div>

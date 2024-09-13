@@ -41,9 +41,13 @@
 }
 
 /*DiaryEditor*/
+.DiaryEditor .emotion_list_wrapper {
+    display: grid;
+    grid-template-columns: repeat(5, auto);
+    gap: 2%;
+}
 .DiaryEditor {
     width: 1200px;
-    border: 2px solid black;
     background-color: white;
 }
 .DiaryEditor section {
@@ -66,9 +70,9 @@
 .DiaryEditor .input_box,
 h4 {
     text-align: center;
-    margin: 0px 0px 0px 200px;
     display: flex;
-    justify-content: "center";
+    justify-content: center;
+    width: 100%;
 }
 .DiaryEditor h4 {
     font-size: 20px;
@@ -91,7 +95,27 @@ h4 {
 
     padding: 20px;
 }
+.DiaryEditor section {
+    width: 100%;
+    margin-bottom: 100px;
 
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+}
+.diary_content_wrapper {
+    width: 100%;
+    background-color: #ececec;
+    border-radius: 5px;
+    word-break: keep-all;
+    overflow-wrap: break-word;
+}
+.DiaryEditor .control_box {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
 /* DiaryHeader */
 header {
     padding-top: 20px;
@@ -114,10 +138,12 @@ header .head_text {
 header .head_btn_left {
     width: 25%;
     justify-content: start;
+    margin-left: 5px;
 }
 header .head_btn_right {
     width: 25%;
     justify-content: end;
+    margin-right: 5px;
 }
 header button {
     font-family: "Nanum Pen Script";
@@ -221,14 +247,14 @@ header button {
     background-color: #fd565f;
     color: white;
 }
-.DiaryPage .diary_content_wrapper {
+.diary_content_wrapper {
     width: 100%;
     background-color: #ececec;
     border-radius: 5px;
     word-break: keep-all;
     overflow-wrap: break-word;
 }
-.DiaryPage .diary_content_wrapper p {
+.diary_content_wrapper p {
     padding: 20px;
     text-align: left;
     font-size: 20px;
