@@ -1,58 +1,60 @@
 import CommonHeader from "../../../../common/CommonHeader";
 import "../../../../../App.css";
 import { useNavigate, useParams } from "react-router-dom";
-import { useCallback, useEffect, useState } from "react";
+import {
+    ChangeEvent,
+    ChangeEventHandler,
+    ReactEventHandler,
+    useCallback,
+    useEffect,
+    useState,
+} from "react";
 import DiaryHeader from "../../../../common/diary/DiaryHeader";
 import DiaryButton from "../../../../common/diary/DiaryButton";
 import EmotionItem from "../../../../common/diary/EmotionItem";
+import { Image } from "antd";
+import { emotionList } from "../../../../../app/data/emotion";
 
 const Detail = () => {
+    //parameter
     const { date } = useParams();
     console.log(date);
+    // state
     const [selectedDate, setSelectDate] = useState("");
     const [emotion, setEmotion] = useState(3);
-    const navigate = useNavigate();
     const [isEdit, setIsEdit] = useState<boolean>(false);
+    const [showImages, setShowImages] = useState<string[]>([]); //blob형태로 변경한 이미지 url들을 담기 위한 배열
+    const [imageUrl, setImageUrl] = useState("");
+    const [imageFile, setImageFile] = useState<File | null>(null);
+    const emotionData = emotionList;
+    const noImage = process.env.PUBLIC_URL + `/assets/noImage.png`;
 
-    //
-    const emotionList = [
-        {
-            emotion_id: 1,
-            emotion_img: process.env.PUBLIC_URL + `/assets/emotion1.png`,
-            emotion_descript: "완전 좋음",
-        },
-        {
-            emotion_id: 2,
-            emotion_img: process.env.PUBLIC_URL + `/assets/emotion2.png`,
-            emotion_descript: "좋음",
-        },
-        {
-            emotion_id: 3,
-            emotion_img: process.env.PUBLIC_URL + `/assets/emotion3.png`,
-            emotion_descript: "그럭 저럭",
-        },
-        {
-            emotion_id: 4,
-            emotion_img: process.env.PUBLIC_URL + `/assets/emotion4.png`,
-            emotion_descript: "나쁨",
-        },
-        {
-            emotion_id: 5,
-            emotion_img: process.env.PUBLIC_URL + `/assets/emotion5.png`,
-            emotion_descript: "완전 나쁨",
-        },
-    ];
-    //
+    //hook
+    const navigate = useNavigate();
 
     useEffect(() => {
         if (!date) return;
         setSelectDate(date);
     }, [date]);
 
+    //
+
+    //function
     const handleClickEmotion = useCallback((score: any) => {
         console.log(score);
         setEmotion(score);
     }, []);
+    const handleChangeImage = (e: React.ChangeEvent<HTMLInputElement>) => {
+        console.log("e.target", e.target.files);
+        if (!e.target.files) return;
+        const file = e.target.files[0];
+        if (file) {
+            let image = window.URL.createObjectURL(file);
+            setImageUrl(image);
+        }
+    };
+
+    //
     return (
         <div>
             <CommonHeader>
@@ -80,7 +82,7 @@ const Detail = () => {
                         <section>
                             <h4>오늘의 감정</h4>
                             <div className="input_box emotion_list_wrapper">
-                                {emotionList.map((item) => (
+                                {emotionData.map((item) => (
                                     <EmotionItem
                                         key={item.emotion_id}
                                         {...item}
@@ -88,6 +90,27 @@ const Detail = () => {
                                         isSelected={item.emotion_id === emotion}
                                     />
                                 ))}
+                            </div>
+                        </section>
+                        <section>
+                            <h4>사진</h4>
+                            <Image
+                                className="imageBox"
+                                src={imageUrl ? imageUrl : noImage}
+                                alt={"이미지가 없습니다."}
+                            />
+                            <div className="filebox">
+                                <input
+                                    className="upload-name"
+                                    value="첨부파일"
+                                    placeholder="첨부파일"
+                                />
+                                <label htmlFor="file">파일찾기</label>
+                                <input
+                                    type="file"
+                                    id="file"
+                                    onChange={handleChangeImage}
+                                />
                             </div>
                         </section>
                         <section>
@@ -101,7 +124,6 @@ const Detail = () => {
                                 />
                             </div>
                         </section>
-                        <section />
                         <div className="control_box">
                             <DiaryButton
                                 text={"취소하기"}
