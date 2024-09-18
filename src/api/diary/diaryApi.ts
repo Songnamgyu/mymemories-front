@@ -1,5 +1,6 @@
 import { createAsyncThunk } from "@reduxjs/toolkit";
 import axiosInstance from "../axios";
+import { DiaryItem } from "../../slice/diary/diarySlice";
 
 type DiarySaveRequestParam = {
     date: string;
@@ -18,6 +19,13 @@ type DiaryResponseParam = {
     fileName: string;
     title?: string;
     deleteYn: string;
+};
+
+type DiaryListParam = {
+    date: string;
+};
+type DiaryListResponse = {
+    data: DiaryItem[];
 };
 
 export const saveDiary = createAsyncThunk<
@@ -53,3 +61,19 @@ export const saveDiary = createAsyncThunk<
         }
     }
 );
+
+export const getDiaryList = createAsyncThunk<
+    DiaryListResponse,
+    DiaryListParam,
+    { rejectValue: any }
+>("/diary/list", async (param: DiaryListParam, { rejectWithValue }) => {
+    try {
+        const response = await axiosInstance.get<DiaryListResponse>(
+            "/diary/list",
+            { params: param }
+        );
+        return response.data;
+    } catch (error: any) {
+        return rejectWithValue(error.response.data || error.message);
+    }
+});

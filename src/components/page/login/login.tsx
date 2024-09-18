@@ -28,10 +28,15 @@ const Login = () => {
     };
     const onSubmitHandler = (e: React.FormEvent) => {
         e.preventDefault();
-        dispatch(fetchUser(loginData));
-        if (isAuthenciated) {
-            naviagtion("/home");
-        }
+        dispatch(fetchUser(loginData))
+            .unwrap()
+            .then(() => {
+                naviagtion("/info");
+            })
+            .catch((error: any) => {
+                console.log(error);
+                alert("로그인 실패");
+            });
     };
     return (
         <>
