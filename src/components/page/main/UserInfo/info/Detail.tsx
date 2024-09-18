@@ -7,16 +7,20 @@ import DiaryButton from "../../../../common/diary/DiaryButton";
 import EmotionItem from "../../../../common/diary/EmotionItem";
 import { Image } from "antd";
 import { emotionList } from "../../../../../app/data/emotion";
-import { useDispatch } from "react-redux";
-import { AppDispatch } from "../../../../../app/store";
+import { useDispatch, useSelector } from "react-redux";
+import { AppDispatch, RootState } from "../../../../../app/store";
 import { saveDiary } from "../../../../../api/diary/diaryApi";
 import dayjs from "dayjs";
 
 const Detail = () => {
     // URL Parameter와 기본 데이터
-    const { date } = useParams();
+    const uploadDir = process.env.REACT_APP_FILE_UPLOAD_DIR;
+    const { date, id } = useParams();
+    console.log("id", id, "date", date);
     const emotionData = emotionList;
     const noImage = process.env.PUBLIC_URL + `/assets/noImage.png`;
+
+    const { diaryData } = useSelector((state: RootState) => state.diary);
 
     // State
     const [selectedDate, setSelectDate] = useState("");
@@ -32,10 +36,20 @@ const Detail = () => {
     const dispatch = useDispatch<AppDispatch>();
 
     useEffect(() => {
-        if (date) {
+        if (Number(id) > 0 && diaryData.length > 0) {
+            const target = diaryData.filter(
+                (item: any) => Number(id) === Number(item.id)
+            );
+            setContent(target[0].content);
+            setEmotion(target[0].score);
+            setSelectDate(dayjs(target[0].selectedDate).format("YYYY-MM-DD"));
+            if (target[0].fileName) {
+                setImageUrl(`${uploadDir}/file/${target[0].fileName}`);
+            }
+        } else if (date) {
             setSelectDate(date);
         }
-    }, [date]);
+    }, [date, diaryData, id]);
 
     // 감정 선택 핸들러
     const handleClickEmotion = useCallback((score: any) => {
@@ -55,7 +69,9 @@ const Detail = () => {
         },
         []
     );
+    const dd = diaryData.filter((item: any) => Number(item.id) === Number(id));
 
+    console.log("dd", dd);
     // 이미지 삭제 핸들러
     const handlerDeleteImage = useCallback(() => {
         setImageUrl("");
@@ -76,8 +92,20 @@ const Detail = () => {
             alert("오늘의 점수 또는 내용을 입력해주세요.");
             return;
         }
-        console.log("param", param);
-        dispatch(saveDiary(param));
+        dispatch(saveDiary(param))
+            .unwrap() // unwrap을 사용하여 비동기 결과를 처리
+            .then(() => {
+                navigate("/info"); // 저장 성공 후 /info로 이동
+            })
+            .catch((error) => {
+                alert("저장에 실패하였습니다");
+                console.error("저장 실패:", error); // 실패 시 에러 처리
+            });
+    };
+
+    //수정 핸들러
+    const handleModify = () => {
+        console.log("modify");
     };
 
     return (
@@ -92,7 +120,15 @@ const Detail = () => {
                                 onClick={() => navigate(-1)}
                             />
                         }
-                        rightChild={<DiaryButton text={"삭제하기"} />}
+                        rightChild={
+                            Number(id) > 0 && (
+                                <DiaryButton
+                                    text={"수정하기"}
+                                    type={"positive"}
+                                    onClick={handleModify}
+                                />
+                            )
+                        }
                     />
                     <section>
                         <h4>오늘은 언제인가요?</h4>
@@ -113,7 +149,10 @@ const Detail = () => {
                                         key={item.emotion_id}
                                         {...item}
                                         onClick={handleClickEmotion}
-                                        isSelected={item.emotion_id === emotion}
+                                        isSelected={
+                                            Number(item.emotion_id) ===
+                                            Number(emotion)
+                                        }
                                     />
                                 ))}
                             </div>
@@ -157,16 +196,7 @@ const Detail = () => {
                             </div>
                         </section>
                         <div className="control_box">
-                            <DiaryButton
-                                text={"취소하기"}
-                                onClick={() => navigate(-1)}
-                            />
-                            {isEdit ? (
-                                <DiaryButton
-                                    text={"수정하기"}
-                                    type={"positive"}
-                                />
-                            ) : (
+                            {Number(id) === 0 && (
                                 <DiaryButton
                                     text={"작성완료"}
                                     type={"positive"}

@@ -1,16 +1,16 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
-import { saveDiary } from "../../api/diary/diaryApi";
+import { getDiaryList, saveDiary } from "../../api/diary/diaryApi";
 
 // Diary 항목에 대한 타입 정의
-type DiaryItem = {
+export type DiaryItem = {
     id: number;
     selectedDate: string;
     content: string;
     score: number;
-    filePath?: any;
-    fileName: string;
+    filePath?: string; // 타입 수정
+    fileName?: string; // 타입 수정
     title?: string;
-    deleteYn: string;
+    deleteYn?: string; // 타입 수정
 };
 
 // Slice의 상태 타입 정의
@@ -31,18 +31,37 @@ const diarySlice = createSlice({
     reducers: {},
     extraReducers: (builder) => {
         builder
+            // saveDiary 요청 중일 때
             .addCase(saveDiary.pending, (state) => {
-                state.isLoading = true; // 요청 중일 때 로딩 상태를 true로 설정
+                state.isLoading = true;
             })
+            // saveDiary 요청 성공 시
             .addCase(
                 saveDiary.fulfilled,
                 (state, action: PayloadAction<DiaryItem>) => {
-                    state.isLoading = false; // 요청 완료 시 로딩 상태 해제
-                    state.diaryData.push(action.payload); // 응답 받은 데이터를 diaryData 배열에 추가
+                    state.isLoading = false;
+                    state.diaryData.push(action.payload);
                 }
             )
+            // saveDiary 요청 실패 시
             .addCase(saveDiary.rejected, (state) => {
-                state.isLoading = false; // 요청 실패 시 로딩 상태 해제
+                state.isLoading = false;
+            })
+            // getDiaryList 요청 중일 때
+            .addCase(getDiaryList.pending, (state) => {
+                state.isLoading = true;
+            })
+            // getDiaryList 요청 성공 시
+            .addCase(
+                getDiaryList.fulfilled,
+                (state, action: PayloadAction<{ data: DiaryItem[] }>) => {
+                    state.isLoading = false;
+                    state.diaryData = action.payload.data;
+                }
+            )
+            .addCase(getDiaryList.rejected, (state, action) => {
+                state.isLoading = false;
+                state.diaryData = [];
             });
     },
 });
