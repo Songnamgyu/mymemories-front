@@ -1,60 +1,85 @@
 import CommonHeader from "../../../../common/CommonHeader";
 import "../../../../../App.css";
 import { useNavigate, useParams } from "react-router-dom";
-import {
-    ChangeEvent,
-    ChangeEventHandler,
-    ReactEventHandler,
-    useCallback,
-    useEffect,
-    useState,
-} from "react";
+import { useCallback, useEffect, useState } from "react";
 import DiaryHeader from "../../../../common/diary/DiaryHeader";
 import DiaryButton from "../../../../common/diary/DiaryButton";
 import EmotionItem from "../../../../common/diary/EmotionItem";
 import { Image } from "antd";
 import { emotionList } from "../../../../../app/data/emotion";
+import { useDispatch } from "react-redux";
+import { AppDispatch } from "../../../../../app/store";
+import { saveDiary } from "../../../../../api/diary/diaryApi";
+import dayjs from "dayjs";
 
 const Detail = () => {
-    //parameter
+    // URL Parameter와 기본 데이터
     const { date } = useParams();
-    console.log(date);
-    // state
-    const [selectedDate, setSelectDate] = useState("");
-    const [emotion, setEmotion] = useState(3);
-    const [isEdit, setIsEdit] = useState<boolean>(false);
-    const [showImages, setShowImages] = useState<string[]>([]); //blob형태로 변경한 이미지 url들을 담기 위한 배열
-    const [imageUrl, setImageUrl] = useState("");
-    const [imageFile, setImageFile] = useState<File | null>(null);
     const emotionData = emotionList;
     const noImage = process.env.PUBLIC_URL + `/assets/noImage.png`;
 
-    //hook
+    // State
+    const [selectedDate, setSelectDate] = useState("");
+    const [emotion, setEmotion] = useState(3);
+    const [isEdit, setIsEdit] = useState<boolean>(false);
+    const [imageUrl, setImageUrl] = useState("");
+    const [content, setContent] = useState("");
+    const [imageFile, setImageFile] = useState<File | null>(null);
+    const [fileKey, setFileKey] = useState(Date.now()); // 파일 입력 초기화를 위한 키
+
+    // Navigate Hook
     const navigate = useNavigate();
+    const dispatch = useDispatch<AppDispatch>();
 
     useEffect(() => {
-        if (!date) return;
-        setSelectDate(date);
+        if (date) {
+            setSelectDate(date);
+        }
     }, [date]);
 
-    //
-
-    //function
+    // 감정 선택 핸들러
     const handleClickEmotion = useCallback((score: any) => {
-        console.log(score);
         setEmotion(score);
     }, []);
-    const handleChangeImage = (e: React.ChangeEvent<HTMLInputElement>) => {
-        console.log("e.target", e.target.files);
-        if (!e.target.files) return;
-        const file = e.target.files[0];
-        if (file) {
-            let image = window.URL.createObjectURL(file);
-            setImageUrl(image);
+
+    // 이미지 파일 선택 핸들러
+    const handleChangeImage = useCallback(
+        (e: React.ChangeEvent<HTMLInputElement>) => {
+            if (!e.target.files) return;
+            const file = e.target.files[0];
+            if (file) {
+                const image = URL.createObjectURL(file);
+                setImageUrl(image);
+                setImageFile(file);
+            }
+        },
+        []
+    );
+
+    // 이미지 삭제 핸들러
+    const handlerDeleteImage = useCallback(() => {
+        setImageUrl("");
+        setImageFile(null);
+        setFileKey(Date.now()); // 파일 입력을 초기화하기 위해 고유한 키 생성
+    }, []);
+
+    // 작성 완료 핸들러
+    const handleSubmit = () => {
+        const param = {
+            date: dayjs(selectedDate).format("YYYYMMDD"),
+            score: emotion,
+            content,
+            imageFile,
+        };
+
+        if (!emotion || !content) {
+            alert("오늘의 점수 또는 내용을 입력해주세요.");
+            return;
         }
+        console.log("param", param);
+        dispatch(saveDiary(param));
     };
 
-    //
     return (
         <div>
             <CommonHeader>
@@ -74,6 +99,7 @@ const Detail = () => {
                         <div className="input_box">
                             <input
                                 className="input_date"
+                                name="date"
                                 type="date"
                                 value={selectedDate}
                                 onChange={(e) => setSelectDate(e.target.value)}
@@ -96,7 +122,7 @@ const Detail = () => {
                             <h4>사진</h4>
                             <Image
                                 className="imageBox"
-                                src={imageUrl ? imageUrl : noImage}
+                                src={imageUrl || noImage}
                                 alt={"이미지가 없습니다."}
                             />
                             <div className="filebox">
@@ -104,23 +130,29 @@ const Detail = () => {
                                     className="upload-name"
                                     value="첨부파일"
                                     placeholder="첨부파일"
+                                    readOnly
                                 />
                                 <label htmlFor="file">파일찾기</label>
                                 <input
                                     type="file"
                                     id="file"
+                                    key={fileKey} // key를 바꿔서 파일 입력 필드 초기화
                                     onChange={handleChangeImage}
                                 />
+                                {imageUrl && (
+                                    <button onClick={handlerDeleteImage}>
+                                        이미지 삭제
+                                    </button>
+                                )}
                             </div>
                         </section>
                         <section>
                             <h4>오늘의 일기</h4>
                             <div className="input_box text_wrapper">
                                 <textarea
-                                    placeholder="오늘은 어땟나요?"
-                                    //ref={contentRef}
-                                    //value={content}
-                                    //onChange={(e) => setContent(e.target.value)}
+                                    placeholder="오늘은 어땠나요?"
+                                    value={content}
+                                    onChange={(e) => setContent(e.target.value)}
                                 />
                             </div>
                         </section>
@@ -133,13 +165,12 @@ const Detail = () => {
                                 <DiaryButton
                                     text={"수정하기"}
                                     type={"positive"}
-                                    // onClick={handleEdit}
                                 />
                             ) : (
                                 <DiaryButton
                                     text={"작성완료"}
                                     type={"positive"}
-                                    //onClick={handleSubmit}
+                                    onClick={handleSubmit}
                                 />
                             )}
                         </div>
@@ -149,4 +180,5 @@ const Detail = () => {
         </div>
     );
 };
+
 export default Detail;

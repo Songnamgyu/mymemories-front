@@ -1,12 +1,16 @@
 import { configureStore, ThunkAction, Action } from "@reduxjs/toolkit";
-import counterReducer from "../features/counter/counterSlice";
 import userReducer from "../slice/userSlice";
+import diaryReducer from "../slice/diary/diarySlice";
 
 export const store = configureStore({
     reducer: {
-        counter: counterReducer,
         user: userReducer,
+        diary: diaryReducer,
     },
+    middleware: (getDefaultMiddleware) =>
+        getDefaultMiddleware({
+            serializableCheck: false,
+        }),
 });
 
 export type AppDispatch = typeof store.dispatch;

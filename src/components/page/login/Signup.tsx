@@ -29,7 +29,7 @@ const SignUp = () => {
         });
     };
     // handleSubmit 함수 수정
-    const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+    const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault(); // 기본 폼 제출 동작 방지
         if (
             !formData?.username ||
@@ -48,12 +48,21 @@ const SignUp = () => {
         }
         console.log("Submitted Data:", formData);
         // 여기서 formData를 백엔드에 전송하는 로직 추가
-        dispatch(createUser(formData));
-        if (message === "success") {
+        try {
+            // formData를 백엔드에 전송하는 로직
+            await dispatch(createUser(formData)).unwrap();
+
+            // 회원가입 성공 시 처리
             alert("회원가입 성공");
-            navigator("/");
-        } else {
-            alert("회원가입 실패, 계정이 이미 존재합니다");
+            navigator("/"); // 회원가입 성공 시 페이지 이동
+        } catch (error: any) {
+            // 회원가입 실패 시 처리
+            if (error.message === "Account already exists") {
+                alert("회원가입 실패, 계정이 이미 존재합니다.");
+            } else {
+                console.error("회원가입 중 오류 발생:", error);
+                alert("회원가입 중 오류가 발생했습니다.");
+            }
         }
     };
 
