@@ -22,6 +22,11 @@ const userSlice = createSlice({
         setIsAuthenciated: (state, action) => {
             state.isAuthenciated = action.payload;
         },
+        setLogout: (state) => {
+            localStorage.removeItem("token");
+            localStorage.removeItem("refreshToken");
+            state.isAuthenciated = false;
+        },
     },
     extraReducers: (builder) => {
         builder
@@ -59,5 +64,5 @@ const userSlice = createSlice({
     },
 });
 
-export const { setIsAuthenciated } = userSlice.actions; // 액션을 export
+export const { setIsAuthenciated, setLogout } = userSlice.actions; // 액션을 export
 export default userSlice.reducer;

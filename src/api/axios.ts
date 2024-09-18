@@ -1,5 +1,4 @@
 import axios from "axios";
-import { env } from "process";
 
 const API_BASE_URL = process.env.REACT_APP_API_URL;
 
@@ -19,10 +18,10 @@ axiosInstance.interceptors.request.use(
     (config) => {
         // localStorage에서 토큰 가져오기
         const token = localStorage.getItem("token");
-
-        // 토큰이 있을 경우 Authorization 헤더에 추가
         if (token) {
             config.headers.Authorization = `Bearer ${token}`;
+        } else {
+            console.warn("No token found in localStorage");
         }
 
         return config;
@@ -44,6 +43,7 @@ axiosInstance.interceptors.response.use(
         if (error.response.status === 401) {
             // 인증 오류(401 Unauthorized) 처리 로직 추가 가능
             console.error("Unauthorized! Redirecting to login...");
+            window.location.href = "/login"; // 로그인 페이지로 리디렉션
         }
 
         return Promise.reject(error);

@@ -8,6 +8,8 @@ import {
 import type { MenuProps } from "antd";
 import { Layout, Menu, theme } from "antd";
 import { handleMoveSubMenu } from "../../utils/navigationUtil"; // 유틸리티 함수 import
+import { useDispatch } from "react-redux";
+import { setLogout } from "../../slice/userSlice";
 
 const { Header, Sider } = Layout;
 
@@ -64,11 +66,14 @@ const CommonHeader: React.FC<CommonHeaderProps> = ({
 }) => {
     const navigate = useNavigate(); // useNavigate 훅을 사용하여 navigate 함수 가져오기
     const [selectedMenu, setSelectedMenu] = React.useState<string>("");
-
+    const dispatch = useDispatch();
     const {
         token: { colorBgContainer },
     } = theme.useToken();
-
+    const handleLogout = () => {
+        dispatch(setLogout());
+        navigate("/");
+    };
     // handleMoveSubMenu가 없는 경우 기본 함수 설정
     const onMenuClick = (items2: any) => {
         console.log(items2);
@@ -92,6 +97,25 @@ const CommonHeader: React.FC<CommonHeaderProps> = ({
                     items={items1}
                     style={{ flex: 1, minWidth: 0 }}
                 />
+                <button
+                    onClick={handleLogout}
+                    style={{
+                        width: "50px",
+                        backgroundColor: "white",
+                        borderRadius: "5px",
+                        height: "50px",
+                    }}
+                >
+                    <h4
+                        style={{
+                            color: "red",
+                            margin: "auto",
+                            fontSize: "20px",
+                        }}
+                    >
+                        로그아웃
+                    </h4>
+                </button>
             </Header>
             <Layout>
                 <Sider
