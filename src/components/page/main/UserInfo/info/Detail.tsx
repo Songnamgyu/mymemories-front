@@ -9,7 +9,7 @@ import { Image } from "antd";
 import { emotionList } from "../../../../../app/data/emotion";
 import { useDispatch, useSelector } from "react-redux";
 import { AppDispatch, RootState } from "../../../../../app/store";
-import { saveDiary } from "../../../../../api/diary/diaryApi";
+import { getFileImage, saveDiary } from "../../../../../api/diary/diaryApi";
 import dayjs from "dayjs";
 
 const Detail = () => {
@@ -44,7 +44,8 @@ const Detail = () => {
             setEmotion(target[0].score);
             setSelectDate(dayjs(target[0].selectedDate).format("YYYY-MM-DD"));
             if (target[0].fileName) {
-                setImageUrl(`${uploadDir}/file/${target[0].fileName}`);
+                const imageUrl = `${process.env.REACT_APP_API_URL}/file/image/${target[0].fileName}`;
+                setImageUrl(imageUrl);
             }
         } else if (date) {
             setSelectDate(date);
