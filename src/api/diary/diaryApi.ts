@@ -77,3 +77,15 @@ export const getDiaryList = createAsyncThunk<
         return rejectWithValue(error.response.data || error.message);
     }
 });
+
+export const getFileImage = createAsyncThunk(
+    "/file",
+    async (fileName: any, { rejectWithValue }) => {
+        try {
+            const response = await axiosInstance.get(`file/image/${fileName}`);
+            return response.data;
+        } catch (error: any) {
+            return rejectWithValue(error.response.data || error.message);
+        }
+    }
+);
