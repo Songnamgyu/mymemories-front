@@ -29,14 +29,12 @@ const Info: React.FC = () => {
 
     const onDoubleClickHandler = () => {
         const date = value.format("YYYY-MM-DD");
-        const id = 0;
         navigate(`/detail/${date}/0`);
     };
 
     // 날짜별로 다이어리 데이터를 렌더링
     const dateCellRender = (currentDate: Dayjs) => {
         const formattedDate = currentDate.format("YYYYMMDD");
-
         // 현재 날짜와 diaryData의 날짜를 비교하여 일치하는 데이터를 필터링
         const listData = diaryData.filter((item) => {
             const date = dayjs(item.selectedDate).format("YYYYMMDD");
@@ -60,10 +58,15 @@ const Info: React.FC = () => {
                             handleModifyDiaryById(item.id, item.selectedDate, e)
                         }
                     >
-                        <Badge
-                            status="success"
-                            text={item.title || item.content}
-                        />
+                        <div className="badgeContainer">
+                            <span className="badge">
+                                <img
+                                    src={`/assets/emotion${item.score}.png`}
+                                    alt={`emotion-${item.score}`}
+                                />
+                                {item.content}
+                            </span>
+                        </div>
                     </li>
                 ))}
             </ul>

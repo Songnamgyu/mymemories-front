@@ -89,3 +89,31 @@ export const getFileImage = createAsyncThunk(
         }
     }
 );
+
+export const updateDiary = createAsyncThunk<
+    DiaryResponseParam,
+    DiarySaveRequestParam,
+    { rejectValue: any }
+>("/updateDiary", async (param: DiarySaveRequestParam, { rejectWithValue }) => {
+    try {
+        const formData = new FormData();
+        formData.append("selectedDate", param.date);
+        formData.append("content", param.content);
+        formData.append("score", param.score.toString());
+        if (param.imageFile) {
+            formData.append("file", param.imageFile);
+        }
+        if (param.title) {
+            formData.append("title", param.title);
+        }
+        const response = await axiosInstance.put("/diary/detail", formData, {
+            headers: {
+                "Content-Type": "multipart/form-data",
+            },
+        });
+        return response.data;
+    } catch (error: any) {
+        console.error("error", error);
+        return rejectWithValue(error.response.data || error.message);
+    }
+});
