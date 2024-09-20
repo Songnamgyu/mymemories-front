@@ -1,5 +1,5 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
-import { getDiaryList, saveDiary } from "../../api/diary/diaryApi";
+import { getDiaryList, saveDiary, updateDiary } from "../../api/diary/diaryApi";
 
 // Diary 항목에 대한 타입 정의
 export type DiaryItem = {
@@ -62,6 +62,18 @@ const diarySlice = createSlice({
             .addCase(getDiaryList.rejected, (state, action) => {
                 state.isLoading = false;
                 state.diaryData = [];
+            })
+            .addCase(updateDiary.pending, (state) => {
+                state.isLoading = true;
+            })
+            .addCase(updateDiary.fulfilled, (state, action) => {
+                state.isLoading = false;
+                state.diaryData.map((item) =>
+                    item.id === action.payload.id ? { ...action.payload } : item
+                );
+            })
+            .addCase(updateDiary.rejected, (state, action) => {
+                state.isLoading = false;
             });
     },
 });

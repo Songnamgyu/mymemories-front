@@ -9,7 +9,11 @@ import { Image } from "antd";
 import { emotionList } from "../../../../../app/data/emotion";
 import { useDispatch, useSelector } from "react-redux";
 import { AppDispatch, RootState } from "../../../../../app/store";
-import { getFileImage, saveDiary } from "../../../../../api/diary/diaryApi";
+import {
+    getFileImage,
+    saveDiary,
+    updateDiary,
+} from "../../../../../api/diary/diaryApi";
 import dayjs from "dayjs";
 
 const Detail = () => {
@@ -107,6 +111,23 @@ const Detail = () => {
     //수정 핸들러
     const handleModify = () => {
         console.log("modify");
+        const param = {
+            id,
+            content,
+            imageUrl,
+            score: emotion,
+            date: selectedDate,
+        };
+        console.log("param", param);
+        dispatch(updateDiary(param))
+            .unwrap()
+            .then(() => {
+                navigate(0);
+            })
+            .catch((error) => {
+                console.error("error", error);
+                alert("수정 실패하였습니다");
+            });
     };
 
     return (

@@ -286,3 +286,12 @@ header button {
     overflow: hidden;
     border: 0;
 }
+/* calendar badge*/
+.badgeContainer .badge {
+    display: flex;
+}
+.badgeContainer .badge img {
+    width: 20px;
+    height: 20px;
+    margin-right: 10px;
+}
