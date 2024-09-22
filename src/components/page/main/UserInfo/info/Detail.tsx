@@ -111,23 +111,29 @@ const Detail = () => {
     //수정 핸들러
     const handleModify = () => {
         console.log("modify");
-        const param = {
-            id,
-            content,
-            imageUrl,
-            score: emotion,
-            date: selectedDate,
-        };
-        console.log("param", param);
-        dispatch(updateDiary(param))
-            .unwrap()
-            .then(() => {
-                navigate(0);
-            })
-            .catch((error) => {
-                console.error("error", error);
-                alert("수정 실패하였습니다");
-            });
+        if (id) {
+            const param = {
+                id,
+                content,
+                imageFile,
+                score: emotion,
+                date: selectedDate,
+            };
+            console.log("param", param);
+            dispatch(updateDiary(param))
+                .unwrap()
+                .then(() => {
+                    navigate(
+                        `/detail/${dayjs(selectedDate).format(
+                            "YYYY-MM-DD"
+                        )}/${id}`
+                    );
+                })
+                .catch((error) => {
+                    console.error("error", error);
+                    alert("수정 실패하였습니다");
+                });
+        }
     };
 
     return (
