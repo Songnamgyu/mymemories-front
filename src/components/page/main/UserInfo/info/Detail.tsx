@@ -10,6 +10,7 @@ import { emotionList } from "../../../../../app/data/emotion";
 import { useDispatch, useSelector } from "react-redux";
 import { AppDispatch, RootState } from "../../../../../app/store";
 import {
+    deleteDiary,
     getFileImage,
     saveDiary,
     updateDiary,
@@ -136,6 +137,15 @@ const Detail = () => {
         }
     };
 
+    //삭제 핸들러
+    const handleDelete = () => {
+        console.log(`targetId = ${id}`);
+        dispatch(deleteDiary(Number(id)))
+            .unwrap()
+            .then(() => navigate("/info"))
+            .catch((error) => console.error(error));
+    };
+
     return (
         <div>
             <CommonHeader>
@@ -150,11 +160,18 @@ const Detail = () => {
                         }
                         rightChild={
                             Number(id) > 0 && (
-                                <DiaryButton
-                                    text={"수정하기"}
-                                    type={"positive"}
-                                    onClick={handleModify}
-                                />
+                                <>
+                                    <DiaryButton
+                                        text={"수정하기"}
+                                        type={"positive"}
+                                        onClick={handleModify}
+                                    />
+                                    <DiaryButton
+                                        text={"삭제하기"}
+                                        type={"negative"}
+                                        onClick={handleDelete}
+                                    />
+                                </>
                             )
                         }
                     />

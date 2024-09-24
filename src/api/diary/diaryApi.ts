@@ -136,3 +136,17 @@ export const updateDiary = createAsyncThunk<
         }
     }
 );
+
+//삭제
+export const deleteDiary = createAsyncThunk(
+    "deleteDiary",
+    async (id: number, { rejectWithValue }) => {
+        try {
+            const response = axiosInstance.delete(`/diary/detail/${id}`);
+            alert("삭제 완료하였습니다.");
+            return response;
+        } catch (error) {
+            console.log(error);
+        }
+    }
+);
