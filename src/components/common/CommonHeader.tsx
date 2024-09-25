@@ -33,10 +33,10 @@ const items2: MenuProps["items"] = [
     NotificationOutlined,
 ].map((icon, index) => {
     const key = String(index + 1);
-    const subMenu = ["UserInfo"];
+    const subMenu = ["Memories"];
     const subMenuChildrenList = [
         {
-            UserInfo: [{ 1: "info" }, { 2: "modify" }],
+            Memories: [{ 1: "Schedule" }, { 2: "modify" }],
         },
     ];
 
