@@ -44,41 +44,38 @@ axiosInstance.interceptors.response.use(
 
             if (refreshToken) {
                 try {
-                    const response = await axios.post("/auth/refresh-token", {
-                        refreshToken,
-                    });
-                    store
-                        .dispatch(
-                            refreshAccessToken(refreshToken) // refreshToken을 전달해야 합니다.
-                        )
-                        .then((result) => {
-                            if (refreshAccessToken.fulfilled.match(result)) {
-                                // 새로운 access token이 성공적으로 받아진 경우
-                                console.log(
-                                    "New access token:",
-                                    result.payload.accessToken
-                                );
-                                // 새로 받은 access token을 저장하거나 처리하는 로직 추가
-                            } else {
-                                console.error("Failed to refresh access token");
-                                // 필요 시 로그인 페이지로 리다이렉트
-                                window.location.href = "/login";
-                            }
-                        });
+                    // refreshToken API 호출
+                    const response = await axios.post(
+                        `${API_BASE_URL}/auth/refresh-token`,
+                        { refreshToken }
+                    );
 
+                    const newAccessToken = response.data.accessToken;
+
+                    // 새로 받은 access token을 localStorage에 저장
+                    localStorage.setItem("token", newAccessToken);
+
+                    // 기존 요청의 Authorization 헤더에 새 access token 추가
                     originalRequest.headers[
                         "Authorization"
-                    ] = `Bearer ${response.data.accessToken}`;
-                    return axiosInstance(originalRequest); // 재시도
+                    ] = `Bearer ${newAccessToken}`;
+
+                    // 원래의 요청을 다시 실행
+                    return axiosInstance(originalRequest);
                 } catch (err) {
-                    store.dispatch(setLogout()); // Refresh token도 만료 시 로그아웃
-                    window.location.href = "/login"; // 로그인 페이지로 리다이렉트
+                    console.error("Failed to refresh token:", err);
+
+                    // 토큰 갱신 실패 시 로그아웃 처리 및 로그인 페이지로 리다이렉트
+                    store.dispatch(setLogout());
+                    window.location.href = "/login";
                 }
             }
         }
+
         return Promise.reject(error);
     }
 );
+
 // // 응답 인터셉터 추가
 // axiosInstance.interceptors.response.use(
 //     (response) => {

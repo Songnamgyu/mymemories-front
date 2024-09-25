@@ -10,8 +10,8 @@ export const handleMoveSubMenu = (
 
     // 메뉴 키 값에 따라 경로 설정
     switch (items2.key) {
-        case "info":
-            navigate("/info"); // 'info' 메뉴 선택 시 '/info'로 이동
+        case "Schedule":
+            navigate("/schedule"); // 'info' 메뉴 선택 시 '/info'로 이동
             break;
         case "modify":
             navigate("/modify"); // 'modify' 메뉴 선택 시 '/modify'로 이동
