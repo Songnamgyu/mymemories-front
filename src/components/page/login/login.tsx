@@ -31,7 +31,7 @@ const Login = () => {
         dispatch(fetchUser(loginData))
             .unwrap()
             .then(() => {
-                naviagtion("/info");
+                naviagtion("/schedule");
             })
             .catch((error: any) => {
                 console.log(error);
