@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { Breadcrumb, Layout, theme } from "antd";
 import { useNavigate } from "react-router-dom";
 import CommonHeader from "../../common/CommonHeader";
-import Info from "./UserInfo/info/Info";
+import Info from "./shcedule/info/Info";
 import { handleMoveSubMenu } from "../../../utils/navigationUtil"; // 유틸리티 함수 import
 
 const { Header, Content } = Layout;

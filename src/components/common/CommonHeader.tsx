@@ -29,21 +29,21 @@ const items1: MenuProps["items"] = ["MyMemories"].map((key) => ({
 
 const items2: MenuProps["items"] = [
     UserOutlined,
-    LaptopOutlined,
-    NotificationOutlined,
+    // LaptopOutlined,
+    // NotificationOutlined,
 ].map((icon, index) => {
     const key = String(index + 1);
     const subMenu = ["Memories"];
     const subMenuChildrenList = [
         {
-            Memories: [{ 1: "Schedule" }, { 2: "modify" }],
+            Memories: [{ 1: "Schedule" }, { 2: "Place" }],
         },
     ];
 
     return {
         key: `sub${key}`,
         icon: React.createElement(icon),
-        label: subMenu[index] || "Unknown",
+        label: subMenu[index],
         children: subMenuChildrenList
             .filter((item: any) => subMenu[index] in item)
             .flatMap((item: any) => {
