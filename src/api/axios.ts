@@ -21,8 +21,11 @@ axiosInstance.interceptors.request.use(
     (config) => {
         // localStorage에서 토큰 가져오기
         const token = localStorage.getItem("token");
+        const refreshToken = localStorage.getItem("refreshToken");
+
         if (token) {
             config.headers.Authorization = `Bearer ${token}`;
+            config.headers["Refresh-Token"] = refreshToken;
         } else {
             console.warn("No token found in localStorage");
         }
@@ -38,6 +41,7 @@ axiosInstance.interceptors.response.use(
     (response) => response,
     async (error) => {
         const originalRequest = error.config;
+        console.log("error_axios", error);
         if (error.response.status === 401 && !originalRequest._retry) {
             originalRequest._retry = true;
             const refreshToken = localStorage.getItem("refreshToken");
