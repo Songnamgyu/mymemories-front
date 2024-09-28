@@ -8,8 +8,9 @@ import "./App.css";
 import Login from "./components/page/login/login";
 import SignUp from "./components/page/login/Signup";
 import Home from "./components/page/main/Home";
-import Info from "./components/page/main/UserInfo/info/Info";
-import Detail from "./components/page/main/UserInfo/info/Detail";
+import Info from "./components/page/main/shcedule/info/Info";
+import Detail from "./components/page/main/shcedule/info/Detail";
+import Place from "./components/page/main/place/Place";
 
 function App() {
     const dispatch = useDispatch<AppDispatch>();
@@ -32,6 +33,7 @@ function App() {
                 <Route path="/home" element={<Home />} />
                 <Route path="/schedule" element={<Info />} />
                 <Route path="/detail/:date/:id" element={<Detail />} />
+                <Route path="/place" element={<Place />} />
             </Routes>
         </BrowserRouter>
     );
