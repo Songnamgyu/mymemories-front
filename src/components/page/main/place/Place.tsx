@@ -4,7 +4,6 @@ import GoogleMapContainer from "./GoogleMapContainer";
 const Place = () => {
     return (
         <CommonHeader>
-            place
             <GoogleMapContainer />
         </CommonHeader>
     );

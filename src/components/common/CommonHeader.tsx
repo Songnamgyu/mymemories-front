@@ -87,7 +87,7 @@ const CommonHeader: React.FC<CommonHeaderProps> = ({
     };
 
     return (
-        <Layout style={{ height: "1000px", display: "flex" }}>
+        <Layout id="layout" style={{ height: "1000px", display: "flex" }}>
             <Header style={{ display: "flex", alignItems: "center" }}>
                 <div className="demo-logo" />
                 <Menu
@@ -117,7 +117,7 @@ const CommonHeader: React.FC<CommonHeaderProps> = ({
                     </h4>
                 </button>
             </Header>
-            <Layout>
+            <Layout id="sidebarLayout">
                 <Sider
                     width={200}
                     style={{
