@@ -1,13 +1,11 @@
-import { Wrapper } from "@googlemaps/react-wrapper";
 import CommonHeader from "../../../common/CommonHeader";
-import { useEffect, useState } from "react";
+import GoogleMapContainer from "./GoogleMapContainer";
 
 const Place = () => {
     return (
         <CommonHeader>
-            <Wrapper apiKey="AIzaSyC_ujptgHlz-dLnyxXR8kYOpheBz42cbwo">
-                <div>Place</div>
-            </Wrapper>
+            place
+            <GoogleMapContainer />
         </CommonHeader>
     );
 };
