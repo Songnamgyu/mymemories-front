@@ -19,13 +19,8 @@ const render = (status: Status) => {
 };
 
 const GoogleMapContainer = () => {
-    return (
-        <div></div>
-        // <Wrapper
-        //     apiKey=""
-        //     render={render}
-        //     libraries={["marker"]}
-        // />
-    );
+    const mapApi: any = process.env.REACT_APP_GOOGLE_MAP_API;
+
+    return <Wrapper apiKey={mapApi} render={render} libraries={["marker"]} />;
 };
 export default GoogleMapContainer;
