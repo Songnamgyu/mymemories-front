@@ -1,33 +1,25 @@
-import { useEffect, useRef } from "react";
-import MapPin from "./MapPin";
-function MapMarker({ map }: { map: google.maps.Map | undefined }) {
-    const ref = useRef<HTMLDivElement>(null);
+import { useEffect } from "react";
 
+interface MapMarkerProps {
+    position: { lat: number; lng: number };
+    map: google.maps.Map;
+}
+
+function MapMarker({ position, map }: MapMarkerProps) {
     useEffect(() => {
-        if (!map || !ref.current) return; // map이 없을 때는 useEffect 실행 안함
-
-        const initMarker = new google.maps.marker.AdvancedMarkerElement({
-            position: {
-                lat: 37.549186395087,
-                lng: 127.07505567644,
-            },
+        // 마커 생성
+        const marker = new google.maps.Marker({
+            position,
             map,
-            title: "이건 마커다 마커마커",
-            content: ref.current,
         });
 
+        // 마커 제거를 위한 cleanup 함수
         return () => {
-            initMarker.map = null; // 클린업
+            marker.setMap(null);
         };
-    }, [map]); // map이 변할 때만 useEffect 재실행
+    }, [position, map]);
 
-    if (!map) return <>error</>; // 임시 에러 처리
-
-    return (
-        <div>
-            <MapPin ref={ref}>마커</MapPin>
-        </div>
-    );
+    return null;
 }
 
 export default MapMarker;
