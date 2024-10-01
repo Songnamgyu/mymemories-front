@@ -1,5 +1,4 @@
-import { forwardRef, ReactNode } from "react";
-import { useEffect } from "react";
+import { forwardRef, ReactNode, useEffect } from "react";
 
 interface MapPinProps {
     children: ReactNode;
@@ -17,14 +16,14 @@ const MapPin = forwardRef<HTMLDivElement, MapPinProps>(function MapPin(
                     borderColor: "#881824",
                 });
                 ref.current.appendChild(initPin.element);
-                console.log(initPin.element);
 
                 return () => {
                     ref.current?.removeChild(initPin.element);
                 };
             }
         }
-    }, []);
+    }, [ref]);
+
     return <div ref={ref}>{children}</div>;
 });
 
