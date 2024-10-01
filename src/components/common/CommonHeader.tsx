@@ -87,7 +87,7 @@ const CommonHeader: React.FC<CommonHeaderProps> = ({
     };
 
     return (
-        <Layout style={{ height: "1000px", display: "flex" }}>
+        <Layout style={{ height: "100%", display: "flex" }}>
             <Header style={{ display: "flex", alignItems: "center" }}>
                 <div className="demo-logo" />
                 <Menu
@@ -97,24 +97,8 @@ const CommonHeader: React.FC<CommonHeaderProps> = ({
                     items={items1}
                     style={{ flex: 1, minWidth: 0 }}
                 />
-                <button
-                    onClick={handleLogout}
-                    style={{
-                        width: "50px",
-                        backgroundColor: "white",
-                        borderRadius: "5px",
-                        height: "50px",
-                    }}
-                >
-                    <h4
-                        style={{
-                            color: "red",
-                            margin: "auto",
-                            fontSize: "20px",
-                        }}
-                    >
-                        로그아웃
-                    </h4>
+                <button className="logout_button" onClick={handleLogout}>
+                    <h4 className="text">로그아웃</h4>
                 </button>
             </Header>
             <Layout>
@@ -123,14 +107,16 @@ const CommonHeader: React.FC<CommonHeaderProps> = ({
                     style={{
                         background: colorBgContainer,
                         borderRight: "1px solid bloack",
+                        marginTop: "-1.1px",
                     }}
                 >
                     <Menu
+                        theme="dark"
                         mode="inline"
                         defaultSelectedKeys={["1"]}
                         defaultOpenKeys={["sub1"]}
                         style={{
-                            height: "1000px",
+                            height: "100%",
                             borderRight: "1px solid black",
                         }}
                         items={items2}

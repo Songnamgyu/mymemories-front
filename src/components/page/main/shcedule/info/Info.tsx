@@ -64,7 +64,7 @@ const Info: React.FC = () => {
                                     src={`/assets/emotion${item.score}.png`}
                                     alt={`emotion-${item.score}`}
                                 />
-                                {item.content}
+                                <h4 className="diaryContent">{item.content}</h4>
                             </span>
                         </div>
                     </li>

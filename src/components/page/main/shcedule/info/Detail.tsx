@@ -101,7 +101,7 @@ const Detail = () => {
         dispatch(saveDiary(param))
             .unwrap() // unwrap을 사용하여 비동기 결과를 처리
             .then(() => {
-                navigate("/info"); // 저장 성공 후 /info로 이동
+                navigate("/schedule"); // 저장 성공 후 /info로 이동
             })
             .catch((error) => {
                 alert("저장에 실패하였습니다");
