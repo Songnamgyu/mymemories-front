@@ -41,16 +41,25 @@ const PlaceMap: React.FC<MapProps> = ({
         console.log("Child clicked:", childKey, childProps);
     };
 
+    // 지도 변경 시 restaurant 리스트 가져오기
     // useEffect(() => {
-    //     dispatch(fetchRestaurantsList())
-    //         .unwrap()
-    //         .then((res: any) => {
-    //             console.log("res", res);
-    //         })
-    //         .catch((error: any) => {
-    //             console.log("error", error);
-    //         });
-    // }, [coordinates, bounds]);
+    //     if (setBounds) {
+    //         const sw = setBounds.sw;
+    //         const ne = setBounds.ne;
+
+    //         // restaurants 목록 요청
+    //         dispatch(fetchRestaurantsList({ sw, ne }))
+    //             .unwrap()
+    //             .then((res: any) => {
+    //                 console.log("res", res);
+    //  setPlaces(res.data);
+    //             })
+    //             .catch((error: any) => {
+    //                 console.log("error", error);
+    //             });
+    //     }
+    // }, [setBounds]);
+
     useEffect(() => {
         navigator.geolocation.getCurrentPosition(
             ({ coords: { latitude, longitude } }) => {
