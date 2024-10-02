@@ -15,6 +15,7 @@ function GoogleMap() {
         const instance = new window.google.maps.Map(mapRef.current, {
             center: { lat: 37.5, lng: 127.0 },
             zoom: 16,
+            disableDoubleClickZoom: true, // 더블 클릭 줌 비활성화
         });
 
         setGoogleMap(instance);
