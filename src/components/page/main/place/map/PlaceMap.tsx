@@ -29,36 +29,24 @@ const PlaceMap: React.FC<MapProps> = ({
     const dispatch = useDispatch<AppDispatch>();
     const [places, setPlaces] = useState<Place[]>([]);
 
-    const handleApiLoaded = (map: any, maps: any) => {
-        console.log("Map Loaded:", map, maps);
-    };
-
-    const handleChange = (value: any) => {
-        console.log("Map changed:", value);
-    };
-
-    const handleChildClick = (childKey: any, childProps: any) => {
-        console.log("Child clicked:", childKey, childProps);
-    };
-
     // 지도 변경 시 restaurant 리스트 가져오기
-    // useEffect(() => {
-    //     if (setBounds) {
-    //         const sw = setBounds.sw;
-    //         const ne = setBounds.ne;
+    useEffect(() => {
+        if (setBounds && setBounds.ne && setBounds.sw) {
+            const sw = setBounds.sw;
+            const ne = setBounds.ne;
 
-    //         // restaurants 목록 요청
-    //         dispatch(fetchRestaurantsList({ sw, ne }))
-    //             .unwrap()
-    //             .then((res: any) => {
-    //                 console.log("res", res);
-    //  setPlaces(res.data);
-    //             })
-    //             .catch((error: any) => {
-    //                 console.log("error", error);
-    //             });
-    //     }
-    // }, [setBounds]);
+            // restaurants 목록 요청
+            dispatch(fetchRestaurantsList({ sw, ne }))
+                .unwrap()
+                .then((res: any) => {
+                    console.log("res", res);
+                    setPlaces(res.data);
+                })
+                .catch((error: any) => {
+                    console.log("error", error);
+                });
+        }
+    }, [setBounds, dispatch]);
 
     useEffect(() => {
         navigator.geolocation.getCurrentPosition(
@@ -72,7 +60,7 @@ const PlaceMap: React.FC<MapProps> = ({
         <div className="mapContainer">
             <div className="placeSearchContainer">
                 <PlaceSearchForm />
-                <PlaceList /> {/* 상태로부터 전달 */}
+                <PlaceList places={places} /> {/* 상태로부터 전달 */}
             </div>
             <div style={{ width: "720px", height: "100%" }}>
                 <GoogleMapReact
@@ -82,20 +70,20 @@ const PlaceMap: React.FC<MapProps> = ({
                     defaultZoom={14}
                     margin={[50, 50, 50, 50]}
                     onChange={(e) => {
+                        // 지도의 중심 좌표 업데이트
                         setCoordinates({
                             lat: e.center.lat,
                             lng: e.center.lng,
                         });
-                        setBounds({
-                            ne: e.marginBounds.ne,
-                            sw: e.marginBounds.sw,
-                        });
+
+                        // 지도의 경계값 업데이트
+                        if (e.marginBounds) {
+                            setBounds({
+                                ne: e.marginBounds.ne,
+                                sw: e.marginBounds.sw,
+                            });
+                        }
                     }}
-                    onChildClick={handleChildClick}
-                    yesIWantToUseGoogleMapApiInternals
-                    onGoogleApiLoaded={({ map, maps }) =>
-                        handleApiLoaded(map, maps)
-                    }
                 />
             </div>
         </div>
