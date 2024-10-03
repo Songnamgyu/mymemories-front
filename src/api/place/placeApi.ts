@@ -24,6 +24,7 @@ export const fetchRestaurantsList = createAsyncThunk(
         sw: { lat: number; lng: number };
         ne: { lat: number; lng: number };
     }): Promise<AxiosResponse<any>> => {
+        console.log("sw", bounds);
         const options = {
             params: {
                 bl_latitude: bounds.sw.lat,
@@ -35,9 +36,9 @@ export const fetchRestaurantsList = createAsyncThunk(
                 "X-RapidAPI-Host": "travel-advisor.p.rapidapi.com",
                 "X-RapidAPI-Key": apiKey,
             },
-            withCredentials: false, // 추가
+            // withCredentials: false, // 추가
         };
-
+        console.log("api,place");
         try {
             const response = await axiosInstance.get(URL, options);
             console.log("response", response.data);
