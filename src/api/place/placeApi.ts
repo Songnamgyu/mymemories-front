@@ -16,35 +16,31 @@ const apiKey: string | undefined =
     process.env.REACT_APP_RAPID_TRAVEL_ADVISOR_API_KEY;
 const URL =
     "https://travel-advisor.p.rapidapi.com/restaurants/list-in-boundary";
+const options = {
+    method: "GET",
+    params: {
+        bl_latitude: "11.847676",
+        tr_latitude: "12.838442",
+        bl_longitude: "109.095887",
+        tr_longitude: "109.149359",
+    },
+    headers: {
+        "X-RapidAPI-Host": "travel-advisor.p.rapidapi.com",
+        "X-RapidAPI-Key": apiKey,
+    },
+    withCredentials: false,
+};
 
 // fetchRestaurantsList 함수 수정
 export const fetchRestaurantsList = createAsyncThunk(
     "place/restaurants",
-    async (bounds: {
-        sw: { lat: number; lng: number };
-        ne: { lat: number; lng: number };
-    }): Promise<AxiosResponse<any>> => {
-        console.log("sw", bounds);
-        const options = {
-            params: {
-                bl_latitude: bounds.sw.lat,
-                bl_longitude: bounds.sw.lng,
-                tr_longitude: bounds.ne.lng,
-                tr_latitude: bounds.ne.lat,
-            },
-            headers: {
-                "X-RapidAPI-Host": "travel-advisor.p.rapidapi.com",
-                "X-RapidAPI-Key": apiKey,
-            },
-            // withCredentials: false, // 추가
-        };
-        console.log("api,place");
+    async (): Promise<AxiosResponse<any>> => {
         try {
             const response = await axiosInstance.get(URL, options);
             console.log("response", response.data);
             return response.data; // 응답 데이터만 반환
         } catch (error) {
-            console.error("Error fetching restaurants", error);
+            console.log("Error fetching restaurants", error);
             throw error;
         }
     }

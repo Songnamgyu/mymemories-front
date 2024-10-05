@@ -14,14 +14,14 @@ const PlaceList = ({ places }: Props) => {
                         hoverable
                         style={{ width: 240 }}
                         cover={
-                            <img
-                                alt="place"
-                                src={
-                                    data?.photo?.images?.large?.url
-                                        ? data.photo.images.large.url
-                                        : "https://os.alipayobjects.com/rmsportal/QBnOOoLaAfKPirc.png"
-                                }
-                            />
+                            data?.photo?.images?.large?.url ? (
+                                <img
+                                    alt="place"
+                                    src={data?.photo?.images?.large?.url}
+                                />
+                            ) : (
+                                <div>no Image</div>
+                            )
                         }
                         key={data.id}
                     >

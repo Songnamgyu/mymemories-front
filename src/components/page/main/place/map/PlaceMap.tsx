@@ -31,21 +31,16 @@ const PlaceMap: React.FC<MapProps> = ({
 
     // 지도 변경 시 restaurant 리스트 가져오기
     useEffect(() => {
-        if (setBounds && setBounds.ne && setBounds.sw) {
-            const sw = setBounds.sw;
-            const ne = setBounds.ne;
-
-            // restaurants 목록 요청
-            dispatch(fetchRestaurantsList({ sw, ne }))
-                .unwrap()
-                .then((res: any) => {
-                    console.log("res", res);
-                    setPlaces(res.data);
-                })
-                .catch((error: any) => {
-                    console.log("error", error);
-                });
-        }
+        // restaurants 목록 요청
+        dispatch(fetchRestaurantsList())
+            .unwrap()
+            .then((res: any) => {
+                console.log("res", res);
+                setPlaces(res.data);
+            })
+            .catch((error: any) => {
+                console.log("error", error);
+            });
     }, [setBounds, dispatch]);
 
     useEffect(() => {

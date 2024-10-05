@@ -324,8 +324,23 @@ header button {
 }
 .mapContainer .placeSearchContainer {
     background-color: gray;
+    overflow: scroll;
     width: 500px;
 }
+.placeListContainer {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    max-width: 100%;
+    overflow-y: scroll;
+}
+
+.placeListContainer .ant-card-cover img {
+    width: 100%; /* 부모 div의 너비에 맞게 설정 */
+    height: 150px; /* 고정된 높이 설정 */
+    object-fit: cover; /* 이미지를 잘라서 div 안에 맞춤 */
+}
+
 .placeListContainer .placeListText {
     font-size: 20px;
     font-weight: bold;
