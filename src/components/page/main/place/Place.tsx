@@ -6,8 +6,8 @@ import { useState } from "react";
 
 const Place = () => {
     const [coordinates, setCoordinates] = useState({
-        lat: 0,
-        lng: 0,
+        lat: 11.94,
+        lng: 108,
     });
     const [bounds, setBounds] = useState(null);
     const mapApi: any = process.env.REACT_APP_GOOGLE_MAP_API;
