@@ -17,7 +17,7 @@ const Place = () => {
                 <PlaceMap
                     mapApi={mapApi}
                     setCoordinates={setCoordinates}
-                    setBounds={setBounds}
+                    // setBounds={setBounds}
                     coordinates={coordinates}
                 />
                 {/* <GoogleMapContainer />
