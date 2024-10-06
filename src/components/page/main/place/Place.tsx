@@ -1,6 +1,4 @@
 import CommonHeader from "../../../common/CommonHeader";
-import GoogleMapContainer from "./GoogleMapContainer";
-import GoogleMapReact from "google-map-react";
 import PlaceMap from "./map/PlaceMap";
 import { useState } from "react";
 
@@ -20,8 +18,6 @@ const Place = () => {
                     // setBounds={setBounds}
                     coordinates={coordinates}
                 />
-                {/* <GoogleMapContainer />
-                <div>11</div> */}
             </div>
         </CommonHeader>
     );
