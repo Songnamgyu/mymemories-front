@@ -4,6 +4,7 @@
     "private": true,
     "dependencies": {
         "@googlemaps/react-wrapper": "^1.1.42",
+        "@react-google-maps/api": "^2.19.3",
         "@reduxjs/toolkit": "^2.2.7",
         "@tanstack/react-query": "^5.53.1",
         "@tanstack/react-query-devtools": "^5.53.1",
@@ -66,6 +67,5 @@
         "@types/react-router-dom": "^5.3.3",
         "tailwindcss": "^3.4.10"
     },
-    "proxy" : "https://travel-advisor.p.rapidapi.com"
-
+    "proxy": "https://travel-advisor.p.rapidapi.com"
 }

@@ -346,3 +346,12 @@ header button {
     font-weight: bold;
     margin: 20px;
 }
+
+.placeListContainer .cardInfo {
+    font-weight: bold;
+    margin-top: 10px;
+}
+
+.placeListContainer .infoItem {
+    margin-top: 10px;
+}

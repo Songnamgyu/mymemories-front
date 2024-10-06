@@ -5,6 +5,13 @@ import PlaceSearchForm from "./PlaceSerachForm";
 import { fetchRestaurantsList } from "../../../../../api/place/placeApi";
 import { useDispatch } from "react-redux";
 import { AppDispatch } from "../../../../../app/store";
+import { mockRestaurantDataList } from "../../../../../mock";
+import {
+    GoogleMap,
+    InfoWindow,
+    LoadScript,
+    Marker,
+} from "@react-google-maps/api";
 
 interface Place {
     id: number;
@@ -25,7 +32,8 @@ const PlaceMap: React.FC<MapProps> = ({
     coordinates,
 }) => {
     const dispatch = useDispatch<AppDispatch>();
-    const [places, setPlaces] = useState<Place[]>([]);
+    const [places, setPlaces] = useState<any>([]);
+    // const [places, setPlaces] = useState<Place[]>([]);
     const [bounds, setBounds] = useState<any>(null);
 
     // 지도 변경 시 restaurant 리스트 가져오기
@@ -40,16 +48,16 @@ const PlaceMap: React.FC<MapProps> = ({
                 bl_longitude: sw.lng, // 남서쪽 (SW)의 경도
                 tr_longitude: ne.lng, // 북동쪽 (NE)의 경도
             };
-
-            dispatch(fetchRestaurantsList(boundsData))
-                .unwrap()
-                .then((res: any) => {
-                    console.log("res", res);
-                    setPlaces(res.data);
-                })
-                .catch((error: any) => {
-                    console.log("error", error);
-                });
+            setPlaces(mockRestaurantDataList.data);
+            // dispatch(fetchRestaurantsList(boundsData))
+            //     .unwrap()
+            //     .then((res: any) => {
+            //         console.log("res", res);
+            //         setPlaces(res.data);
+            //     })
+            //     .catch((error: any) => {
+            //         console.log("error", error);
+            //     });
         }
     }, [bounds, dispatch]);
 
@@ -88,7 +96,24 @@ const PlaceMap: React.FC<MapProps> = ({
                             sw: e.marginBounds.sw,
                         });
                     }}
-                />
+                    {...places?.map((place: any, index: number) => (
+                        <Marker
+                            key={index}
+                            position={{
+                                lat: Number(place.latitude),
+                                lng: Number(place.longitude),
+                            }}
+                            // lat={Number(place.latitude)} // Marker에 lat, lng 전달
+                            // lng={Number(place.longitude)}
+                            // text={place.name}
+                        >
+                            <InfoWindow>
+                                <div>{place.name}</div>{" "}
+                                {/* 마커 위에 표시할 텍스트 */}
+                            </InfoWindow>
+                        </Marker>
+                    ))}
+                ></GoogleMapReact>
             </div>
         </div>
     );
