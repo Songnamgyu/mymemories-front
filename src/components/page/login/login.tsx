@@ -5,6 +5,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { AppDispatch, RootState } from "../../../app/store";
 import { fetchUser } from "../../../api/users/userApi";
 import Home from "../main/Home";
+import Info from "../main/shcedule/info/Info";
 
 type LoginParams = {
     email: string;
@@ -41,7 +42,7 @@ const Login = () => {
     return (
         <>
             {isAuthenciated ? (
-                <Home />
+                <Info />
             ) : (
                 <div className="h-screen flex">
                     {/* 로그인 이미지 섹션 */}
