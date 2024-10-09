@@ -2,15 +2,12 @@ import { Status, Wrapper } from "@googlemaps/react-wrapper";
 import GoogleMap from "./GoogleMap";
 
 const render = (status: Status) => {
+    console.log("status", status);
     switch (status) {
         case Status.LOADING:
             return <div>Loading...</div>;
         case Status.SUCCESS:
-            return (
-                <div>
-                    <GoogleMap />
-                </div>
-            );
+            return <GoogleMap />;
         case Status.FAILURE:
             return <div>Error</div>;
         default:

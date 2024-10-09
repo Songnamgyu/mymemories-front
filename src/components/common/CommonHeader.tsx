@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import {
     LaptopOutlined,
@@ -77,6 +77,7 @@ const CommonHeader: React.FC<CommonHeaderProps> = ({
     // handleMoveSubMenu가 없는 경우 기본 함수 설정
     const onMenuClick = (items2: any) => {
         console.log(items2);
+        setSelectedMenu(items2.key); // 메뉴 선택 시 상태 업데이트
         if (handleMoveSubMenu) {
             handleMoveSubMenu(items2, setSelectedMenu, navigate); // 유틸리티 함수 호출
         } else {
@@ -101,7 +102,7 @@ const CommonHeader: React.FC<CommonHeaderProps> = ({
                     <h4 className="text">로그아웃</h4>
                 </button>
             </Header>
-            <Layout>
+            <Layout id="sidebarLayout">
                 <Sider
                     width={200}
                     style={{

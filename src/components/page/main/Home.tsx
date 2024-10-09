@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Breadcrumb, Layout, theme } from "antd";
 import { useNavigate } from "react-router-dom";
 import CommonHeader from "../../common/CommonHeader";
@@ -39,7 +39,7 @@ const Home: React.FC = () => {
                         }}
                     >
                         {/* selectedMenu 값에 따라 Info 컴포넌트 렌더링 */}
-                        {selectedMenu === "info" && <Info />}
+                        {selectedMenu === "Schedule" && <Info />}
                     </Content>
                 </Layout>
             </CommonHeader>
