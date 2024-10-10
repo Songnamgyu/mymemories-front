@@ -4,10 +4,11 @@ import { useState } from "react";
 
 interface Props {
     onChangeRating?: (value: number) => void;
+    onChangeType?: (value: string) => void;
 }
 
-const PlaceSearchForm: React.FC<Props> = ({ onChangeRating }) => {
-    const [value, setValue] = useState<string>("RE");
+const PlaceSearchForm: React.FC<Props> = ({ onChangeRating, onChangeType }) => {
+    const [value, setValue] = useState<string>("restaurant");
     const [scoreValue, setScoreValue] = useState<number>(3.0);
 
     const handleScoreChange = (value: number) => {
@@ -15,6 +16,11 @@ const PlaceSearchForm: React.FC<Props> = ({ onChangeRating }) => {
         if (onChangeRating) {
             onChangeRating(value);
         }
+    };
+
+    const handleTypeChange = (value: string) => {
+        setValue(value);
+        onChangeType && onChangeType(value);
     };
 
     return (
@@ -26,10 +32,10 @@ const PlaceSearchForm: React.FC<Props> = ({ onChangeRating }) => {
                 value={value}
                 style={{ width: 250, margin: "10px" }}
                 options={searchTypeList.map((item) => ({
-                    value: item.value,
+                    value: item.label,
                     label: item.label,
                 }))}
-                onChange={setValue} // 선택된 검색 유형 값을 업데이트
+                onChange={handleTypeChange} // 선택된 검색 유형 값을 업데이트
             />
             <Select
                 value={scoreValue}

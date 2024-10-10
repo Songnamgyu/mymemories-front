@@ -30,12 +30,17 @@ const PlaceMap: React.FC<MapProps> = ({
     const [places, setPlaces] = useState<any>([]);
     const [bounds, setBounds] = useState<any>(null);
     const [rating, setRating] = useState(3);
+    const [type, setType] = useState("restaurant");
 
     // 평점 변경 핸들러
     const onChangeRating = (value: any) => {
         setRating(value); // 평점이 변경되면 `rating` 상태가 업데이트됨
     };
-
+    const onChangeType = (type: string) => {
+        setType(type);
+    };
+    console.log("mock", mockRestaurantDataList?.data);
+    console.log("type", type);
     // 지도 범위가 바뀔 때마다 새로운 장소를 가져오고 `places` 업데이트
     useEffect(() => {
         if (bounds) {
@@ -71,8 +76,11 @@ const PlaceMap: React.FC<MapProps> = ({
     return (
         <div className="mapContainer">
             <div className="placeSearchContainer">
-                <PlaceSearchForm onChangeRating={onChangeRating} />
-                <PlaceList places={places} rating={rating} />
+                <PlaceSearchForm
+                    onChangeRating={onChangeRating}
+                    onChangeType={onChangeType}
+                />
+                <PlaceList places={places} rating={rating} type={type} />
             </div>
             <div style={{ width: "720px", height: "100%" }}>
                 <GoogleMapReact
@@ -95,7 +103,11 @@ const PlaceMap: React.FC<MapProps> = ({
                 >
                     {/* 평점 필터 적용 후 Marker 생성 */}
                     {places
-                        ?.filter((item: any) => item.rating >= rating) // rating 값 이상인 장소들만 필터링
+                        ?.filter(
+                            (item: any) =>
+                                item.rating >= rating &&
+                                item.category.key === "Hotel".toLowerCase()
+                        ) // rating 값 이상인 장소들만 필터링
                         .map((place: any, i: number) => (
                             <CustomMarker
                                 key={i}
