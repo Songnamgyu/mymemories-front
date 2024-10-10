@@ -12,11 +12,11 @@ const places = [
 const searchTypeList = [
     {
         value: "RE",
-        label: "Restaurants",
+        label: "Restaurant",
     },
     {
         value: "HT",
-        label: "Hotels",
+        label: "Hotel",
     },
     {
         value: "AT",

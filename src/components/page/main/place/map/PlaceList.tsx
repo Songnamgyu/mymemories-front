@@ -4,13 +4,18 @@ import Meta from "antd/es/card/Meta";
 interface Props {
     places: any[];
     rating: number;
+    type: string;
 }
 
-const PlaceList = ({ places, rating }: Props) => {
+const PlaceList = ({ places, rating, type }: Props) => {
     return (
         <div className="placeListContainer">
             {places
-                .filter((item: any) => item.rating >= rating)
+                .filter(
+                    (item: any) =>
+                        item.rating >= rating &&
+                        item.category.key === type.toLowerCase()
+                )
                 .map((data: any) => {
                     // 데이터에 주소가 있는 경우에만 카드를 렌더링
                     if (!data?.address) return null;
