@@ -21,7 +21,6 @@ const Detail = () => {
     // URL Parameter와 기본 데이터
     const uploadDir = process.env.REACT_APP_FILE_UPLOAD_DIR;
     const { date, id } = useParams();
-    console.log("id", id, "date", date);
     const emotionData = emotionList;
     const noImage = process.env.PUBLIC_URL + `/assets/noImage.png`;
 
@@ -77,7 +76,6 @@ const Detail = () => {
     );
     const dd = diaryData.filter((item: any) => Number(item.id) === Number(id));
 
-    console.log("dd", dd);
     // 이미지 삭제 핸들러
     const handlerDeleteImage = useCallback(() => {
         setImageUrl("");
@@ -111,7 +109,6 @@ const Detail = () => {
 
     //수정 핸들러
     const handleModify = () => {
-        console.log("modify");
         if (id) {
             const param = {
                 id,
@@ -120,7 +117,6 @@ const Detail = () => {
                 score: emotion,
                 date: selectedDate,
             };
-            console.log("param", param);
             dispatch(updateDiary(param))
                 .unwrap()
                 .then(() => {
@@ -139,7 +135,6 @@ const Detail = () => {
 
     //삭제 핸들러
     const handleDelete = () => {
-        console.log(`targetId = ${id}`);
         dispatch(deleteDiary(Number(id)))
             .unwrap()
             .then(() => navigate("/info"))

@@ -39,8 +39,6 @@ const PlaceMap: React.FC<MapProps> = ({
     const onChangeType = (type: string) => {
         setType(type);
     };
-    console.log("mock", mockRestaurantDataList?.data);
-    console.log("type", type);
     // 지도 범위가 바뀔 때마다 새로운 장소를 가져오고 `places` 업데이트
     useEffect(() => {
         if (bounds) {
