@@ -8,7 +8,6 @@ interface MarkerProps {
 }
 
 const CustomMarker: React.FC<MarkerProps> = ({ name, photoUrl }) => {
-    console.log(photoUrl);
     return (
         <Card
             style={{

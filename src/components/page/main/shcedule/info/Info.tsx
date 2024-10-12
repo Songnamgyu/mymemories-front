@@ -46,7 +46,6 @@ const Info: React.FC = () => {
             e: any
         ) => {
             e.stopPropagation(); // 이벤트 버블링 방지
-            console.log("targetId", id);
             navigate(`/detail/${selectedDate}/${id}`);
         };
         return (

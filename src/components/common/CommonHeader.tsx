@@ -76,7 +76,6 @@ const CommonHeader: React.FC<CommonHeaderProps> = ({
     };
     // handleMoveSubMenu가 없는 경우 기본 함수 설정
     const onMenuClick = (items2: any) => {
-        console.log(items2);
         setSelectedMenu(items2.key); // 메뉴 선택 시 상태 업데이트
         if (handleMoveSubMenu) {
             handleMoveSubMenu(items2, setSelectedMenu, navigate); // 유틸리티 함수 호출
