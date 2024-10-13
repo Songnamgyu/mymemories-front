@@ -18,23 +18,34 @@ const CustomMarker: React.FC<MarkerProps> = ({ name, photoUrl }) => {
                 overflow: "hidden",
             }}
             bodyStyle={{
-                padding: 5,
+                padding: 0, // 내부 패딩을 0으로 설정
                 display: "flex",
                 flexDirection: "column",
                 justifyContent: "center",
+                alignItems: "center", // 수직 중앙 정렬
             }}
         >
-            {photoUrl != null && photoUrl && (
+            {photoUrl ? ( // photoUrl이 존재하는 경우에만 이미지 표시
                 <img
                     src={photoUrl}
                     alt={name}
                     style={{
                         width: "100px",
-                        height: "25px",
+                        height: "75px", // 이미지 높이를 조정
                         objectFit: "cover",
-                        marginTop: "4px",
+                        marginBottom: "4px", // 마진 조정
                     }}
                 />
+            ) : (
+                <div
+                    style={{
+                        height: "75px",
+                        display: "flex",
+                        alignItems: "center",
+                    }}
+                >
+                    No Image
+                </div>
             )}
 
             <div
