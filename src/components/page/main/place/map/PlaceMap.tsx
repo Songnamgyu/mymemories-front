@@ -2,9 +2,8 @@ import React, { useEffect, useState } from "react";
 import GoogleMapReact from "google-map-react";
 import PlaceList from "./PlaceList";
 import PlaceSearchForm from "./PlaceSerachForm";
-import { useDispatch } from "react-redux";
-import { AppDispatch } from "../../../../../app/store";
-import { mockRestaurantDataList } from "../../../../../mock";
+import { shallowEqual, useDispatch, useSelector } from "react-redux";
+import { AppDispatch, RootState } from "../../../../../app/store";
 import CustomMarker from "./CustomMarker";
 import { fetchRestaurantsList } from "../../../../../api/place/placeApi";
 
@@ -27,10 +26,14 @@ const PlaceMap: React.FC<MapProps> = ({
     coordinates,
 }) => {
     const dispatch = useDispatch<AppDispatch>();
-    const [places, setPlaces] = useState<any>([]);
     const [bounds, setBounds] = useState<any>(null);
     const [rating, setRating] = useState(3);
     const [type, setType] = useState("restaurant");
+
+    const { placeList } = useSelector(
+        (state: RootState) => state.place,
+        shallowEqual
+    );
 
     // 평점 변경 핸들러
     const onChangeRating = (value: any) => {
@@ -49,18 +52,16 @@ const PlaceMap: React.FC<MapProps> = ({
                 bl_longitude: sw.lng,
                 tr_longitude: ne.lng,
             };
-            // dispatch(fetchRestaurantsList(boundsData))
-            //     .unwrap()
-            //     .then((res) => {
-            //         setPlaces(res.data);
-            //     })
-            //     .catch((error) => {
-            //         console.log("error", error);
-            //     });
+            dispatch(fetchRestaurantsList(boundsData))
+                .unwrap()
+                .then((res) => {})
+                .catch((error) => {
+                    console.log("error", error);
+                });
             // 장소 데이터를 불러와 `places` 업데이트
-            setPlaces(mockRestaurantDataList.data);
+            // setPlaces(mockRestaurantDataList.data);
         }
-    }, [bounds, dispatch]);
+    }, [bounds, dispatch, setCoordinates]);
 
     // 좌표 설정 (최초 로딩 시)
     useEffect(() => {
@@ -78,7 +79,7 @@ const PlaceMap: React.FC<MapProps> = ({
                     onChangeRating={onChangeRating}
                     onChangeType={onChangeType}
                 />
-                <PlaceList places={places} rating={rating} type={type} />
+                <PlaceList placeList={placeList} rating={rating} type={type} />
             </div>
             <div style={{ width: "720px", height: "100%" }}>
                 <GoogleMapReact
@@ -87,7 +88,7 @@ const PlaceMap: React.FC<MapProps> = ({
                     center={coordinates}
                     defaultZoom={14}
                     margin={[50, 50, 50, 50]}
-                    key={rating} // rating이 변경될 때마다 리렌더링을 강제
+                    key={`${rating}-${placeList?.length}-${bounds?.ne?.lat}-${bounds?.sw?.lng}`}
                     onChange={(e) => {
                         setCoordinates({
                             lat: e.center.lat,
@@ -100,12 +101,9 @@ const PlaceMap: React.FC<MapProps> = ({
                     }}
                 >
                     {/* 평점 필터 적용 후 Marker 생성 */}
-                    {places
-                        ?.filter(
-                            (item: any) =>
-                                item.rating >= rating &&
-                                item.category.key === "Hotel".toLowerCase()
-                        ) // rating 값 이상인 장소들만 필터링
+
+                    {placeList
+                        ?.filter((item: any) => item.rating >= rating) // rating 값 이상인 장소들만 필터링
                         .map((place: any, i: number) => (
                             <CustomMarker
                                 key={i}
